@@ -28,14 +28,11 @@
 """
 @author: rockhopper
 """
-import os 
+import os
 import numpy as np
 import os.path
 
-
-
-window_compare=35;#option to user to be changes for every iteration 
-
+window_compare = 35 #option to user to be changes for every iteration 
 
 #get the compare coordinates of the tiles
 os.system('ls las_diff/compare*las >compare_las')
@@ -53,52 +50,52 @@ os.system('cut -d. -f 1 reference_y1 >reference_y')
 a = open("compare_x", "r")
 compare_x = a.read().splitlines()
 a.close()
-compare_x=[int(i) for i in compare_x]
+compare_x = [int(i) for i in compare_x]
 
 a = open("compare_y", "r")
 compare_y = a.read().splitlines()
 a.close()
-compare_y=[int(i) for i in compare_y]
+compare_y = [int(i) for i in compare_y]
 
 a = open("reference_x", "r")
 reference_x = a.read().splitlines()
 a.close()
-reference_x=[int(i) for i in reference_x]
+reference_x = [int(i) for i in reference_x]
 
 a = open("reference_y", "r")
 reference_y = a.read().splitlines()
 a.close()
-reference_y=[int(i) for i in reference_y]
+reference_y = [int(i) for i in reference_y]
 
 # define the core points 
-minx=min(compare_x+reference_x)
-maxx=max(compare_x+reference_x)
-miny=min(compare_y+reference_y)
-maxy=max(compare_y+reference_y)
+minx = min(compare_x+reference_x)
+maxx = max(compare_x+reference_x)
+miny = min(compare_y+reference_y)
+maxy = max(compare_y+reference_y)
 
-core_x=list(range(minx,maxx,window_compare));
-core_y=list(range(maxy,miny,-window_compare));
-icp_process1=[1];
+core_x = list(range(minx, maxx, window_compare))
+core_y = list(range(maxy, miny, -window_compare))
+icp_process1 = [1]
 
 #write a list of tiles common to both datasets
 outF = open("tiles.txt", "w")
 
-for i in range(1,len(compare_x)):
-    compare_search_x = compare_x[i];
-    compare_search_y = compare_y[i];
+for i in range(1, len(compare_x)):
+    compare_search_x = compare_x[i]
+    compare_search_y = compare_y[i]
     
-    same_x = np.where(reference_x== np.array(compare_search_x))[0];
-    same_y = np.where(reference_y== np.array(compare_search_y))[0];
-    same_element = 0;
+    same_x = np.where(reference_x == np.array(compare_search_x))[0]
+    same_y = np.where(reference_y == np.array(compare_search_y))[0]
+    same_element = 0
     for p in same_x:
-        pairs = np.where(p== same_y)[0];
-        if len(pairs)>0:
-            same_element=1
-    if same_element ==1:
+        pairs = np.where(p == same_y)[0]
+        if len(pairs) > 0:
+            same_element = 1
+    if same_element == 1:
         icp_process1.append([compare_search_x, compare_search_y])
         outF.write(str([compare_search_x]).strip('[]'))
         outF.write(str(' '))
         outF.write(str([compare_search_y]).strip('[]'))
         outF.write("\n")
-        
-outF.close()  
+      
+outF.close()

@@ -24,8 +24,8 @@
 """
 @author: rockhopper
 """
-import numpy as np 
-import matplotlib.pyplot as plt 
+import numpy as np
+import matplotlib.pyplot as plt
 import statistics
 from scipy.interpolate import griddata
 from scipy.spatial.transform import Rotation as R
@@ -33,8 +33,8 @@ from affine import Affine
 import rasterio as rio
 from rasterio.crs import CRS
 
-window_compare=35 # THIS MUST BE DEFINED FROM BEFORE
-epsg = 2444; # this needs to be set for individual datasets
+window_compare = 35  # THIS MUST BE DEFINED FROM BEFORE
+epsg = 2444 # this needs to be set for individual datasets
 
 
 no_data = -999 # no data value for creating the tiffs. 
@@ -44,12 +44,12 @@ def plot_range(data):
     color_range = abs(statistics.median(data)) + abs(1.5*np.percentile(data, 85))
     return color_range
 
-def plot_png_3d_diff(grid_x, grid_y, points, data_to_grid,name):
+def plot_png_3d_diff(grid_x, grid_y, points, data_to_grid, name):
     
     #grid the data. The linear grid help id nan's. 
     nan_grid = griddata(points, data_to_grid, (grid_x, grid_y), method='linear')
     data_grid = griddata(points, data_to_grid, (grid_x, grid_y), method='nearest')
-    sum_data = np.sum([nan_grid*0,data_grid], axis=0)
+    sum_data = np.sum([nan_grid * 0 , data_grid], axis=0)
     
     #determine the range for plotting 
     col_r = plot_range(data_to_grid)
@@ -85,8 +85,8 @@ def make_geotiff(grid_x, grid_y, points, data_to_grid,name,epsg_data,no_data):
     b1 = x_list[abs(sum_data.flatten()) > np.median(abs(data_to_grid))*5];
     b2 = x_list[a.flatten()==no_data];
     data_grid_flatten= data_grid.flatten()
-    data_grid_flatten[b1]=no_data
-    data_grid_flatten[b2]=no_data
+    data_grid_flatten[b1] = no_data
+    data_grid_flatten[b2] = no_data
     
     
     #reshape, as expected for geotiffs
