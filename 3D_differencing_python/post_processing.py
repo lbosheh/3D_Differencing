@@ -1,11 +1,16 @@
-# Measuring change at the Earth’s surface: On-Demand vertical and 3D topographic differencing implemented in OpenTopography
-#  
+# Measuring change at the Earth’s surface: On-Demand vertical and 3D
+# topographic differencing implemented in OpenTopography
+
 # Chelsea Scotta: cpscott1@asu.edu(corresponding author)
 # Minh Phan, Viswanath Nandigam, Christopher Crosby, Ramon Arrowsmith
 
 # %Copyright (c) 2007 The Regents of the University of California
 
-#Permission to use, copy, modify, and distribute this software and its documentation for educational, research and non-profit purposes, without fee, and without a written agreement is hereby granted, provided that the above copyright notice, this paragraph and the following three paragraphs appear in all copies.
+# Permission to use, copy, modify, and distribute this software and its
+# documentation for educational, research and non-profit purposes, without fee,
+# and without a written agreement is hereby granted, provided that the above
+# copyright notice, this paragraph and the following three paragraphs appear
+# in all copies.
 
 # Permission to make commercial use of this software may be obtained
 # by contacting:
@@ -16,10 +21,24 @@
 # (858) 534-5815
 # invent@ucsd.edu
 
-#THIS SOFTWARE IS PROVIDED BY THE REGENTS OF THE UNIVERSITY OF CALIFORNIA AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE REGENTS OF THE UNIVERSITY OF CALIFORNIA AND 
+# CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+#  NOT 
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
+# PARTICULAR 
+# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE
+#  LIABLE FOR 
+# ANY DIRECT,INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY 
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
 
 
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 @author: rockhopper
@@ -34,19 +53,21 @@ import rasterio as rio
 from rasterio.crs import CRS
 
 window_compare = 35  # THIS MUST BE DEFINED FROM BEFORE
-epsg = 2444 # this needs to be set for individual datasets
+epsg = 2444  # this needs to be set for individual datasets
 
 
-no_data = -999 # no data value for creating the tiffs. 
+no_data = -999  # no data value for creating the tiffs. 
 
 
 def plot_range(data):
-    color_range = abs(statistics.median(data)) + abs(1.5*np.percentile(data, 85))
+    color_range = abs(statistics.median(data))
+    + abs(1.5*np.percentile(data, 85))
     return color_range
+
 
 def plot_png_3d_diff(grid_x, grid_y, points, data_to_grid, name):
     
-    #grid the data. The linear grid help id nan's. 
+    # grid the data. The linear grid help id nan's. 
     nan_grid = griddata(points, data_to_grid, (grid_x, grid_y), method='linear')
     data_grid = griddata(points, data_to_grid, (grid_x, grid_y), method='nearest')
     sum_data = np.sum([nan_grid * 0 , data_grid], axis=0)
