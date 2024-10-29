@@ -50,54 +50,17 @@ import os.path
 
 window_compare = 35  # option to user to be changes for every iteration 
 
-# Define the directory containing the files
-directory = 'las_diff'
-# Define the output file to save the extracted parts
-output_file = 'compare.txt'
-compare_cx = ''
-compare_cy = ''
-reference_rx = ''
-reference_ry = ''
+# get the compare coordinates of the tiles
+os.system('ls compare*las >compare_las')
+os.system('cut -d_ -f 3 compare_las >compare_x')
+os.system('cut -d_ -f 4 compare_las >compare_y1')
+os.system('cut -d. -f 1 compare_y1 >compare_y')
 
-
-
-# Loop through the files in the directory
-for filename in os.listdir(directory):
-    # Example: Extract the part of the filename before the first underscore
-    if '_' in filename:
-        extracted_part = filename.split('_')[0]  # Change this logic as needed
-        if extracted_part == "compare":
-            compare_cx += filename.split('_')[1] + '\n' # Gets first point 
-            compare_cy += filename.split('_')[2].replace('.las','') + '\n' # Gets second point and 
-        else: 
-            reference_rx += filename.split('_')[1] + '\n'  #Gets first reference point
-            reference_ry += filename.split('_')[2].replace('.las', '') + '\n'  #Gets second point and 
-    
-with open("compare_x", 'w') as out_cx:
-    out_cx.write(compare_cx)
-
-with open("compare_y", 'w') as out_cy:
-    out_cy.write(compare_cy)
-
-with open("reference_x", 'w') as out_rx:
-    out_rx.write(reference_rx)
-
-with open("reference_y", 'w') as out_ry:
-    out_ry.write(reference_ry)
-
-# print(f'Extracted parts saved to {output_file}')
-
-# # get the compare coordinates of the tiles
-# os.system('dir .\\las_diff\\compare*las >compare_las')
-# os.system('cut -d_ -f 3 compare_las >compare_x')
-# os.system('cut -d_ -f 4 compare_las >compare_y1')
-# os.system('cut -d. -f 1 compare_y1 >compare_y')
-
-# # get the reference coordinates of the tiles
-# os.system('dir .\\las_diff\\reference*las >reference_las')
-# os.system('cut -d_ -f 3 reference_las >reference_x')
-# os.system('cut -d_ -f 4 reference_las >reference_y1')
-# os.system('cut -d. -f 1 reference_y1 >reference_y')
+# get the reference coordinates of the tiles
+os.system('ls reference*las >reference_las')
+os.system('cut -d_ -f 3 reference_las >reference_x')
+os.system('cut -d_ -f 4 reference_las >reference_y1')
+os.system('cut -d. -f 1 reference_y1 >reference_y')
 
 # load in the x, y coordinates of the compare and reference datasets
 a = open("compare_x", "r")
